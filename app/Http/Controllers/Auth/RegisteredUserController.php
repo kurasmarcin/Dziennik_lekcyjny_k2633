@@ -37,16 +37,20 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Pobierz ID roli 'student'
         $studentRole = Role::where('name', 'student')->first();
-        if (!$studentRole) {
-            return redirect()->back()->withErrors(['role' => 'Rola student nie istnieje.']);
-        }
 
-        $user = User::create([
+        if (!$studentRole) {
+           return redirect()->back()->withErrors(['role' => 'Rola student nie istnieje w bazie danych.']);
+        }
+        //dd($studentRole->id);
+
+         // Tworzenie nowego użytkownika z przypisaną rolą student
+         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $studentRole->id, // Przypisanie roli student
+            'role_id' => $studentRole->id, // Przypisanie roli
         ]);
 
         //event(new Registered($user));
@@ -54,6 +58,7 @@ class RegisteredUserController extends Controller
         //Auth::login($user);
 
        // return redirect(RouteServiceProvider::HOME);
-       return redirect()->route('login')->with('status', 'Rejestracja zakończona sukcesem! Zaloguj się, aby kontynuować.');
+       return redirect()->route('login')->with('status', 'Rejestracja zakończona sukcesem! Zaloguj się.');
+    
     }
 }
