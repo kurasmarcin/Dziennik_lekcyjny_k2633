@@ -57,4 +57,12 @@ Route::middleware('auth')->group(function () {
     })->middleware('role:admin');
 });
 
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    }
+    return view('home');
+})->name('home');
+
+
 require __DIR__.'/auth.php';
