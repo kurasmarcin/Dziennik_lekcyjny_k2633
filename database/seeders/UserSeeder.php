@@ -30,6 +30,12 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
             'role_id' => Role::where('name', 'admin')->first()->id,
         ]);
+        User::create([
+            'name' => 'Nauczyciel',
+            'email' => 'teacher@example.com',
+            'password' => bcrypt('password'),
+            'role_id' => Role::where('name', 'teacher')->first()->id,
+        ]);
     }
 }
 

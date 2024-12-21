@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::get('/dashboard', function () {
         return redirect('/parent/dashboard');
     } elseif ($role === 'admin') {
         return redirect('/admin/dashboard');
+    }elseif ($role === 'teacher') {
+        return redirect('/teacher/dashboard');
     }
 
     return abort(403, 'Nie masz dostępu.');
@@ -55,6 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->middleware('role:admin');
+
+    // Panel nauczyciela
+    Route::get('/teacher/dashboard', function () {
+        return view('teacher.dashboard');
+    })->middleware('role:teacher');
 });
 
 Route::get('/', function () {
@@ -63,6 +71,16 @@ Route::get('/', function () {
     }
     return view('home');
 })->name('home');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index.alias');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+    Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create'); // Formularz dodawania
+    Route::post('/admin', [AdminController::class, 'store'])->name('admin.store'); // Zapis nowego użytkownika
+    Route::get('/admin/{user}/edit', [AdminController::class, 'edit'])->name('admin.edit'); // Formularz edycji
+    Route::put('/admin/{user}', [AdminController::class, 'update'])->name('admin.update'); // Aktualizacja użytkownika
+    Route::delete('/admin/{user}', [AdminController::class, 'destroy'])->name('admin.destroy'); // Usunięcie użytkownika
+});
 
 
 require __DIR__.'/auth.php';
