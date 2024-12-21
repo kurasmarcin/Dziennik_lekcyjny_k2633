@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +82,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/{user}/edit', [AdminController::class, 'edit'])->name('admin.edit'); // Formularz edycji
     Route::put('/admin/{user}', [AdminController::class, 'update'])->name('admin.update'); // Aktualizacja użytkownika
     Route::delete('/admin/{user}', [AdminController::class, 'destroy'])->name('admin.destroy'); // Usunięcie użytkownika
+});
+    Route::middleware(['auth', 'role:teacher'])->group(function () {
+        Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard'])->name('teacher.dashboard');
+        Route::get('/teacher/students', [TeacherController::class, 'students'])->name('teacher.students');
+        Route::post('/teacher/add-grade', [TeacherController::class, 'addGrade'])->name('teacher.addGrade');
+        Route::post('/teacher/send-message', [TeacherController::class, 'sendMessage'])->name('teacher.sendMessage');
+});
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/student/messages', [StudentController::class, 'messages'])->name('student.messages');
+    Route::get('/student/grades', [StudentController::class, 'grades'])->name('student.grades');
 });
 
 
