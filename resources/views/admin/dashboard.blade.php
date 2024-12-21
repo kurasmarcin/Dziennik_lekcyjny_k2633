@@ -13,17 +13,9 @@
                             Zarządzaj użytkownikami
                         </a>
 
-                        <!-- Przejście do profilu -->
-                        <a href="{{ route('profile.edit') }}" 
-                           class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4">
-                            Edytuj profil
-                        </a>
+                        
 
-                        <!-- Strona główna -->
-                        <a href="{{ route('home') }}" 
-                           class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            Strona główna
-                        </a>
+                       
                     </div>
                 </div>
             </div>
