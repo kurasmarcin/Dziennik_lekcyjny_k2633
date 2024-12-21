@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('role_id')->nullable(); // Dodanie kolumny role_id
-            $table->foreign('role_id')->references('id')->on('roles');
+            // Poprawiona deklaracja role_id
+            $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,4 +32,3 @@ return new class extends Migration
         Schema::dropIfExists('users'); // Usunięcie całej tabeli users
     }
 };
-

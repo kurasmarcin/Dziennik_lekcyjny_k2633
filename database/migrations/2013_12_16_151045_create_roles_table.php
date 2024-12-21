@@ -10,17 +10,13 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::create('roles', function (Blueprint $table) {
-        $table->id();
-        $table->string('name')->unique();
-        $table->timestamps();
-    });
-
-    Schema::table('users', function (Blueprint $table) {
-        $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
-    });
-}
+    {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id(); // Klucz główny
+            $table->string('name')->unique(); // Nazwa roli
+            $table->timestamps(); // Znaczniki czasowe
+        });
+    }
 
     /**
      * Reverse the migrations.
