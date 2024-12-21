@@ -41,6 +41,32 @@ public function addGrade(Request $request)
 
     return redirect()->route('teacher.students')->with('success', 'Ocena została dodana.');
 }
+public function editGrade(Grade $grade)
+{
+    // Tylko nauczyciel, który dodał ocenę, może ją edytować
+    if ($grade->teacher_id !== auth()->id()) {
+        abort(403, 'Nie masz dostępu do edycji tej oceny.');
+    }
+
+    return view('teacher.grades.edit', compact('grade'));
+}
+
+public function updateGrade(Request $request)
+{
+    $request->validate([
+        'grade_id' => 'required|exists:grades,id',
+        'grade' => 'required|integer|min:1|max:6',
+        'comment' => 'nullable|string',
+    ]);
+
+    $grade = Grade::findOrFail($request->grade_id);
+    $grade->update([
+        'grade' => $request->grade,
+        'comment' => $request->comment,
+    ]);
+
+    return redirect()->back()->with('success', 'Ocena została zaktualizowana.');
+}
 
 public function sendMessage(Request $request)
 {
@@ -57,4 +83,15 @@ public function sendMessage(Request $request)
 
     return redirect()->route('teacher.students')->with('success', 'Wiadomość została wysłana.');
 }
+public function sentMessages()
+{
+    $messages = Message::where('sender_id', auth()->id())
+                       ->with('recipient') // Ładowanie relacji odbiorcy
+                       ->latest() // Sortowanie od najnowszych
+                       ->get();
+
+    return view('teacher.messages', compact('messages'));
+}
+
+
 }

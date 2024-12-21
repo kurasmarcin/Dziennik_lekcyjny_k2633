@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Models\Grade;
+use App\Models\Message;
 
 class AdminController extends Controller
 {
@@ -87,4 +89,17 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admin.index')->with('success', 'Użytkownik został usunięty.');
     }
+    public function showUserDetails($id)
+{
+    $user = User::with('grades.teacher')->findOrFail($id);
+
+    // Pobierz wiadomości, w których użytkownik jest nadawcą lub odbiorcą
+    $messages = Message::where('sender_id', $id)
+                        ->orWhere('recipient_id', $id)
+                        ->with(['sender', 'recipient'])
+                        ->get();
+
+    return view('admin.user-details', compact('user', 'messages'));
+}
+
 }

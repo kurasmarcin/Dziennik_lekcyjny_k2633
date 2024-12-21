@@ -84,12 +84,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/{user}/edit', [AdminController::class, 'edit'])->name('admin.edit'); // Formularz edycji
     Route::put('/admin/{user}', [AdminController::class, 'update'])->name('admin.update'); // Aktualizacja użytkownika
     Route::delete('/admin/{user}', [AdminController::class, 'destroy'])->name('admin.destroy'); // Usunięcie użytkownika
+    Route::get('/admin/user/{id}', [AdminController::class, 'showUserDetails'])->name('admin.user.details');
 });
     Route::middleware(['auth', 'role:teacher'])->group(function () {
         Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard'])->name('teacher.dashboard');
         Route::get('/teacher/students', [TeacherController::class, 'students'])->name('teacher.students');
         Route::post('/teacher/add-grade', [TeacherController::class, 'addGrade'])->name('teacher.addGrade');
         Route::post('/teacher/send-message', [TeacherController::class, 'sendMessage'])->name('teacher.sendMessage');
+        Route::put('/teacher/update-grade', [TeacherController::class, 'updateGrade'])->name('teacher.updateGrade');
+        Route::delete('/teacher/grades/{grade}', [TeacherController::class, 'deleteGrade'])->name('teacher.grades.destroy');
+
+        Route::get('/teacher/messages', [TeacherController::class, 'sentMessages'])->name('teacher.messages');
+
+
+
 });
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
