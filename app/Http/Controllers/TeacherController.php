@@ -15,13 +15,17 @@ class TeacherController extends Controller
     }
 
     public function students()
-{
-    $students = User::whereHas('role', function ($query) {
-        $query->where('name', 'student');
-    })->get();
-
-    return view('teacher.students', compact('students'));
-}
+    {
+        // Pobieranie uczniów
+        $students = User::whereHas('role', function ($query) {
+            $query->where('name', 'student');
+        })->with(['grades' => function ($query) {
+            $query->where('teacher_id', auth()->id()); // Filtruj oceny tylko nauczyciela
+        }])->get();
+    
+        return view('teacher.students', compact('students'));
+    }
+    
 
     
 public function addGrade(Request $request)
