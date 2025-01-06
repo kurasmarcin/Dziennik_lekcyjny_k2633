@@ -19,32 +19,45 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $student->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $student->email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @if ($student->grades->count() > 0)
-                                @foreach ($student->grades as $grade)
-                                    <div class="flex items-center space-x-2">
-                                        <span class="inline-block bg-gray-100 text-gray-800 text-sm px-2 py-1 rounded-full">
-                                            {{ $grade->grade }} ({{ $grade->comment ?? 'Brak komentarza' }})
-                                        </span>
-                                        <button onclick="openEditGradeModal('{{ $grade->id }}', '{{ $grade->grade }}', '{{ $grade->comment }}')"
-                                                class="text-yellow-500 hover:text-yellow-700">
-                                            Edytuj
-                                        </button>
-                                    </div>
-                                @endforeach
-                            @else
-                                <span class="text-gray-500">Brak ocen</span>
-                            @endif
-                        </td>
+                 @if ($student->grades->count() > 0)
+                 @foreach ($student->grades as $grade)
+            <div class="flex items-center space-x-2">
+                <span class="inline-block bg-gray-100 text-gray-800 text-sm px-2 py-1 rounded-full">
+                    {{ $grade->grade }} ({{ $grade->comment ?? 'Brak komentarza' }})
+                </span>
+                <!-- Przycisk edytuj -->
+                <button onclick="openEditGradeModal('{{ $grade->id }}', '{{ $grade->grade }}', '{{ $grade->comment }}')"
+                        class="text-yellow-500 hover:text-yellow-700">
+                    Edytuj
+                </button>
+                <!-- Przycisk usuń -->
+                <form action="{{ route('teacher.grades.destroy', $grade->id) }}" method="POST" class="inline-block ml-2">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" 
+                            onclick="return confirm('Czy na pewno chcesz usunąć tę ocenę?')"
+                            class="text-red-500 hover:text-red-700">
+                        Usuń
+                    </button>
+                </form>
+            </div>
+        @endforeach
+    @else
+        <span class="text-gray-500">Brak ocen</span>
+    @endif
+</td>
+
+
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
                             <!-- Dodaj ocenę -->
                             <button onclick="openGradeModal('{{ $student->id }}')"
                                     class="text-blue-600 hover:text-blue-900 focus:outline-none">
-                                Dodaj ocenę
+                                Dodaj ocenę|
                             </button>
                             <!-- Wyślij wiadomość -->
                             <button onclick="openMessageModal('{{ $student->id }}')"
                                     class="text-green-600 hover:text-green-900 focus:outline-none">
-                                Wyślij wiadomość
+                                |Wyślij wiadomość
                             </button>
                         </td>
                     </tr>

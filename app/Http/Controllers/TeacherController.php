@@ -96,6 +96,19 @@ public function sentMessages()
 
     return view('teacher.messages', compact('messages'));
 }
+public function destroy($id)
+{
+    $grade = Grade::find($id);
+
+    if (!$grade) {
+        return redirect()->back()->with('error', 'Ocena nie została znaleziona.');
+    }
+
+    $grade->delete();
+
+    return redirect()->back()->with('success', 'Ocena została usunięta.');
+}
+
 
 
 }

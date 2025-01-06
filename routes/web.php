@@ -85,8 +85,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('/teacher/add-grade', [TeacherController::class, 'addGrade'])->name('teacher.addGrade');
         Route::post('/teacher/send-message', [TeacherController::class, 'sendMessage'])->name('teacher.sendMessage');
         Route::put('/teacher/update-grade', [TeacherController::class, 'updateGrade'])->name('teacher.updateGrade');
-        Route::delete('/teacher/grades/{grade}', [TeacherController::class, 'deleteGrade'])->name('teacher.grades.destroy');
-
+        Route::delete('/teacher/grades/{id}', [TeacherController::class, 'destroy'])->name('teacher.grades.destroy');
         Route::get('/teacher/messages', [TeacherController::class, 'sentMessages'])->name('teacher.messages');
 
 
