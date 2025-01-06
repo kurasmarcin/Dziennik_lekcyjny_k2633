@@ -28,8 +28,6 @@ Route::get('/dashboard', function () {
 
     if ($role === 'student') {
         return redirect('/student/dashboard');
-    } elseif ($role === 'parent') {
-        return redirect('/parent/dashboard');
     } elseif ($role === 'admin') {
         return redirect('/admin/dashboard');
     }elseif ($role === 'teacher') {
@@ -51,12 +49,7 @@ Route::middleware('auth')->group(function () {
     // Panel ucznia
     Route::get('/student/dashboard', function () {
         return view('student.dashboard');
-    })->middleware('role:student');
-
-    // Panel rodzica
-    Route::get('/parent/dashboard', function () {
-        return view('parent.dashboard');
-    })->middleware('role:parent');
+    })->middleware('role:student');    
 
     // Panel administratora
     Route::get('/admin/dashboard', function () {
